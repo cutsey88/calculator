@@ -1,0 +1,22 @@
+#nums {
+    display: grid;
+    height: 600px;
+    width: 800px;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
+    
+}
+
+.numsButtons {
+    
+}
+
+#operators {
+    display: grid;
+    height: 600px;
+    width: 800px;
+    grid-template-columns: repeat(4, 1fr);
+    justify-items: center;
+    align-items: center;
+}
