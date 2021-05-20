@@ -14,18 +14,60 @@ const decimalPoint = document.querySelector('#decimalPoint');
 const equalSign = document.querySelector('#equalSign');
 
 const displayButtons = document.querySelectorAll('.displayButton');
-displayButtons.forEach((item) => {item.addEventListener('mouseenter', poop)});
+displayButtons.forEach((item) => {item.addEventListener('click', updateDisplay)});
+equalSign.addEventListener('click', operate);
 
-let operationArray = [5,'+',6];
+let operationArray = [];
+let outputArray = [];
 
-outputWindow.textContent = operationArray.join(' ');
+function sum(array) {
+    return [array[0] + array[2]];
+}
+
+function subtract(array) {
+    return [array[0] - array[2]];
+}
+
+function multiply(array) {
+    return [array[0] * array[2]];
+}
+
+function divide(array) {
+    return [array[0] / array[2]];
+}
+
+function mergeNumbers(array) {
+    for (i = 0; i < array.length; i++) {
+        while ((!isNaN(Number(array[i])) || array[i] == '.') && 
+        (!isNaN(Number(array[i + 1])) || array[i + 1] == '.')) {
+            array[i] = array[i].toString() + array[i + 1].toString();
+            array.splice(i + 1, 1);
+        }
+        if (!isNaN(Number(array[i]))) {
+            array[i] = Number(array[i]);
+        }
+    }
+}
 
 function operate() {
     let output = [];
+    mergeNumbers(operationArray);
+    console.log(operationArray);
 }
 
-function poop() {
-    operationArray = ['poop','pooper'];
-    outputWindow.textContent = operationArray.join(' ');
-    console.log('poop');
+function updateDisplay() {
+    if (isNaN(Number(this.textContent))) {
+        operationArray.push(this.textContent);
+    } else {
+        operationArray.push(Number(this.textContent));
+    }
+    
+    if (isNaN(Number(this.textContent))) {
+        outputArray.push(' ',this.textContent,' ');
+    } else {
+        outputArray.push(this.textContent);
+    }
+    outputWindow.textContent = outputArray.join('');
+    console.log(this.textContent);
+    console.log(typeof this.textContent);
 }
