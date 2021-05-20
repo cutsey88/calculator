@@ -20,16 +20,31 @@ equalSign.addEventListener('click', operate);
 let operationArray = [];
 let outputArray = [];
 
-function sum(array) {
-    return [array[0] + array[2]];
+function sumSubtract(array) {
+    let plusIndex;
+    let minusIndex;
+    while(array.findIndex(item => item == '+') != -1 || 
+    array.findIndex(item => item == '-') != -1) {
+        plusIndex = array.findIndex(item => item == '+');
+        minusIndex = array.findIndex(item => item == '-');
+        if ((plusIndex < minusIndex || minusIndex == -1) && plusIndex != -1) {
+            array[plusIndex - 1] = array[plusIndex - 1] + array[plusIndex + 1];
+            array.splice(plusIndex, 2);
+        } else if (minusIndex < plusIndex || plusIndex == -1) {
+            array[minusIndex - 1] = array[minusIndex - 1] - array[minusIndex + 1];
+            array.splice(minusIndex, 2);
+        }
+    }
 }
 
-function subtract(array) {
-    return [array[0] - array[2]];
-}
 
 function multiply(array) {
-    return [array[0] * array[2]];
+    let xIndex;
+    while(array.findIndex(item => item == 'x') != -1) {
+        xIndex = array.findIndex(item => item == 'x');
+        array[xIndex - 1] = array[xIndex - 1] * array[xIndex + 1];
+        array.splice(xIndex, 2);
+    }
 }
 
 function divide(array) {
@@ -52,6 +67,8 @@ function mergeNumbers(array) {
 function operate() {
     let output = [];
     mergeNumbers(operationArray);
+    multiply(operationArray);
+    sumSubtract(operationArray);
     console.log(operationArray);
 }
 
