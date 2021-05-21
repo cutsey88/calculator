@@ -1,0 +1,44 @@
+.textWindow {
+    height: 80px;
+    width: 400px;
+
+}
+
+#output {
+    background-color: bisque;
+}
+
+#liveOutput {
+    background-color: rgb(224, 215, 200);
+}
+
+#buttons {
+    display: flex;
+    float: left;
+}
+
+#nums {
+    display: grid;
+    height: 400px;
+    width: 300px;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
+    background-color: cornflowerblue;
+    border: crimson;
+    
+}
+
+.numsButtons {
+    
+    
+}
+
+#operators {
+    display: grid;
+    height: 400px;
+    width: 400px;
+    grid-template-columns: repeat(4, 1fr);
+    justify-items: center;
+    align-items: center;
+}
