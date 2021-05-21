@@ -24,21 +24,29 @@
     grid-template-columns: repeat(3, 1fr);
     justify-items: center;
     align-items: center;
-    background-color: cornflowerblue;
     border: crimson;
     
 }
 
 .numsButtons {
-    
-    
+    height: 100px;
+    width: 100px;
+    background-color: cornflowerblue;
+    border-width: 1px;
+}
+.opsButtons {
+    height: 80px;
+    width: 100px;
+    background-color: coral;
+    border-width: 1px;
+
 }
 
 #operators {
     display: grid;
     height: 400px;
-    width: 400px;
-    grid-template-columns: repeat(4, 1fr);
+    width: 100px;
+    grid-template-rows: repeat(5, 1fr);
     justify-items: center;
     align-items: center;
 }

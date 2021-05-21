@@ -73,6 +73,8 @@ function operate() {
 }
 
 function updateDisplay() {
+    
+    if (operationArray[operationArray.length - 1] != )
     if (isNaN(Number(this.textContent))) {
         operationArray.push(this.textContent);
     } else {
