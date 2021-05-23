@@ -19,7 +19,7 @@
 
 #nums {
     display: grid;
-    height: 400px;
+    height: 432px;
     width: 300px;
     grid-template-columns: repeat(3, 1fr);
     justify-items: center;
@@ -29,13 +29,13 @@
 }
 
 .numsButtons {
-    height: 100px;
+    height: 108px;
     width: 100px;
     background-color: cornflowerblue;
     border-width: 1px;
 }
 .opsButtons {
-    height: 80px;
+    height: 72px;
     width: 100px;
     background-color: coral;
     border-width: 1px;

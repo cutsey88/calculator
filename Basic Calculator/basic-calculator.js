@@ -1,5 +1,6 @@
 const outputWindow = document.querySelector('#output');
 const liveOutputWindow = document.querySelector('#liveOutput');
+
 const num0 = document.querySelector('#num0');
 const num1 = document.querySelector('#num1');
 const num2 = document.querySelector('#num2');
@@ -12,10 +13,14 @@ const num8 = document.querySelector('#num8');
 const num9 = document.querySelector('#num9');
 const decimalPoint = document.querySelector('#decimalPoint');
 const equalSign = document.querySelector('#equalSign');
-
+const back = document.querySelector('#back');
+const clear = document.querySelector('#clear');
 const displayButtons = document.querySelectorAll('.displayButton');
-displayButtons.forEach((item) => {item.addEventListener('click', updateDisplay)});
+
+displayButtons.forEach((item) => {item.addEventListener('click', enterValue)});
 equalSign.addEventListener('click', operate);
+back.addEventListener('click', backSpace);
+clear.addEventListener('click', clearAll);
 
 let operationArray = [];
 let outputArray = [];
@@ -48,7 +53,12 @@ function multiply(array) {
 }
 
 function divide(array) {
-    return [array[0] / array[2]];
+    let divIndex;
+    while(array.findIndex(item => item == '÷') != -1) {
+        divIndex = array.findIndex(item => item == '÷');
+        array[divIndex - 1] = array[divIndex - 1] / array[divIndex + 1];
+        array.splice(divIndex, 2);
+    }
 }
 
 function mergeNumbers(array) {
@@ -64,17 +74,8 @@ function mergeNumbers(array) {
     }
 }
 
-function operate() {
-    let output = [];
-    mergeNumbers(operationArray);
-    multiply(operationArray);
-    sumSubtract(operationArray);
-    console.log(operationArray);
-}
-
-function updateDisplay() {
+function enterValue() {
     
-    if (operationArray[operationArray.length - 1] != )
     if (isNaN(Number(this.textContent))) {
         operationArray.push(this.textContent);
     } else {
@@ -87,6 +88,56 @@ function updateDisplay() {
         outputArray.push(this.textContent);
     }
     outputWindow.textContent = outputArray.join('');
-    console.log(this.textContent);
-    console.log(typeof this.textContent);
+    console.log(operationArray);
+    console.log(outputArray);
+}
+
+function updateLiveDisplay() {
+
+}
+
+function backSpace() {
+    if (outputArray[outputArray.length -1] == ' ') {
+        outputArray.splice(-3, 3);
+    } else {
+        outputArray.splice(-1, 1);
+    }
+    operationArray.splice(-1, 1);
+    outputWindow.textContent = outputArray.join('');
+    console.log(operationArray);
+    console.log(outputArray);
+}
+
+function clearAll() {
+    operationArray = [];
+    outputArray = [];
+    outputWindow.textContent = outputArray;
+}
+
+function calculate(array) {
+    mergeNumbers(array);
+    multiply(array);
+    divide(array);
+    sumSubtract(array);
+}
+
+function checkDivByZero() {
+    let zeroCheck = operationArray.slice();
+    calculate(zeroCheck);
+    if (isFinite(zeroCheck[0])) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function operate() {
+    if (checkDivByZero()) {
+        liveOutputWindow.textContent = 'Can\'t divide by 0';
+    } else {
+        calculate(operationArray);
+        outputArray = operationArray.slice();
+        outputWindow.textContent = outputArray;
+        console.log(operationArray);
+    }
 }
