@@ -16,14 +16,19 @@ const equalSign = document.querySelector('#equalSign');
 const back = document.querySelector('#back');
 const clear = document.querySelector('#clear');
 const displayButtons = document.querySelectorAll('.displayButton');
+const opsButtons = document.querySelectorAll('.opsButtons');
 
 displayButtons.forEach((item) => {item.addEventListener('click', enterValue)});
 equalSign.addEventListener('click', operate);
 back.addEventListener('click', backSpace);
 clear.addEventListener('click', clearAll);
 
+let theNumbers = [num0, num1, num2, num3, num4, num5, num6, num7, num8, num9];
+
 let operationArray = [];
 let outputArray = [];
+let hitVal;
+let justOperated;
 
 function sumSubtract(array) {
     let plusIndex;
@@ -75,19 +80,31 @@ function mergeNumbers(array) {
 }
 
 function enterValue() {
-    
-    if (isNaN(Number(this.textContent))) {
-        operationArray.push(this.textContent);
+    if (justOperated && theNumbers.some((num) => num === this)) {
+        return;
     } else {
-        operationArray.push(Number(this.textContent));
+        hitVal = this.textContent;
+        if (checkDoubleOperator()) {
+            console.log(operationArray);
+            console.log(outputArray);
+            return;
+        } else {
+            if (isNaN(Number(this.textContent))) {
+                operationArray.push(this.textContent);
+            } else {
+                operationArray.push(Number(this.textContent));
+            }
+            
+            if (isNaN(Number(this.textContent))) {
+                outputArray.push(' ',this.textContent,' ');
+            } else {
+                outputArray.push(this.textContent);
+            }
+            outputWindow.textContent = outputArray.join('');
+            justOperated = false;
+        }
     }
-    
-    if (isNaN(Number(this.textContent))) {
-        outputArray.push(' ',this.textContent,' ');
-    } else {
-        outputArray.push(this.textContent);
-    }
-    outputWindow.textContent = outputArray.join('');
+    liveOutputWindow.textContent = '';
     console.log(operationArray);
     console.log(outputArray);
 }
@@ -104,14 +121,18 @@ function backSpace() {
     }
     operationArray.splice(-1, 1);
     outputWindow.textContent = outputArray.join('');
+    justOperated = false;
     console.log(operationArray);
     console.log(outputArray);
+    liveOutputWindow.textContent = '';
 }
 
 function clearAll() {
     operationArray = [];
     outputArray = [];
     outputWindow.textContent = outputArray;
+    justOperated = false;
+    liveOutputWindow.textContent = '';
 }
 
 function calculate(array) {
@@ -131,13 +152,54 @@ function checkDivByZero() {
     }
 }
 
+function checkEndOperator() {
+    let sign;
+    for (i = 0; i < opsButtons.length; i++) {
+        sign = opsButtons[i].textContent;
+        if (sign === operationArray[operationArray.length -1]) {
+            return true;
+        }
+    }
+}
+
+function checkDoubleOperator() {
+    let endSign;
+    let endInOp;
+    let hitSign;
+    let hitOp;
+    
+    for (i = 0; i < opsButtons.length; i++) {
+        endSign = opsButtons[i].textContent;
+        if (endSign === operationArray[operationArray.length -1]) {
+            endInOp = true;
+            break;
+        }
+    }
+    for (i = 0; i < opsButtons.length; i++) {
+        hitSign = opsButtons[i].textContent;
+        if (hitSign === hitVal) {
+            hitOp = true;
+            break;
+        }
+    }
+    if (endInOp && hitOp) {
+        return true;
+    }
+}
+
 function operate() {
-    if (checkDivByZero()) {
-        liveOutputWindow.textContent = 'Can\'t divide by 0';
+    if (checkEndOperator()) {
+        console.log(operationArray[operationArray.length -1]);
+        return;
     } else {
-        calculate(operationArray);
-        outputArray = operationArray.slice();
-        outputWindow.textContent = outputArray;
-        console.log(operationArray);
+        if (checkDivByZero()) {
+            liveOutputWindow.textContent = 'Can\'t divide by 0';
+        } else {
+            calculate(operationArray);
+            outputArray = operationArray.slice();
+            outputWindow.textContent = outputArray;
+            justOperated = true;
+            console.log(operationArray);
+        }
     }
 }
