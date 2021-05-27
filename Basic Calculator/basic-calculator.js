@@ -78,36 +78,38 @@ function mergeNumbers(array) {
         }
     }
 }
-
+//improve decimal rule to make decimal input valid after operate if result is whole number
 function enterValue() {
-    if (justOperated && theNumbers.some((num) => num === this)) {
+    hitVal = this.textContent;
+    if ((justOperated && theNumbers.some((num) => num === this)) ||
+    (justOperated && hitVal == '.')) {
         return;
+    } else if (checkDoubleOperator()) { 
+        console.log(operationArray);
+        console.log(outputArray);
+        return;
+    } else if (checkBadDecimal()) {
+        return;    
     } else {
-        hitVal = this.textContent;
-        if (checkDoubleOperator()) {
-            console.log(operationArray);
-            console.log(outputArray);
-            return;
+        if (isNaN(Number(this.textContent))) {
+            operationArray.push(this.textContent);
         } else {
-            if (isNaN(Number(this.textContent))) {
-                operationArray.push(this.textContent);
-            } else {
-                operationArray.push(Number(this.textContent));
-            }
-            
-            if (isNaN(Number(this.textContent))) {
-                outputArray.push(' ',this.textContent,' ');
-            } else {
-                outputArray.push(this.textContent);
-            }
-            outputWindow.textContent = outputArray.join('');
-            justOperated = false;
+            operationArray.push(Number(this.textContent));
         }
+            
+        if (isNaN(Number(this.textContent))) {
+            outputArray.push(' ',this.textContent,' ');
+        } else {
+            outputArray.push(this.textContent);
+        }
+        outputWindow.textContent = outputArray.join('');
+        justOperated = false;
     }
     liveOutputWindow.textContent = '';
     console.log(operationArray);
     console.log(outputArray);
 }
+
 
 function updateLiveDisplay() {
 
@@ -185,6 +187,25 @@ function checkDoubleOperator() {
     if (endInOp && hitOp) {
         return true;
     }
+}
+
+function checkBadDecimal() {
+    if (hitVal == '.') {
+        if (operationArray[operationArray.length -1] == '.') {
+            return true;
+        } else {
+            for (i = 0; i < opsButtons.length; i++) {
+                if (opsButtons[i].textContent == -1) {
+                    continue;
+                }
+                if (typeof operationArray[operationArray.length - 1] == 'number' &&
+                operationArray.lastIndexOf('.') > operationArray.lastIndexOf(opsButtons[i].textContent)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 function operate() {
